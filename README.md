@@ -22,6 +22,25 @@ Kostenloser Selbsthilfe-Blocker gegen Pornografie für Windows 10/11.
 
 Erneuter Doppelklick auf `KlarBlock.exe` öffnet das Statusfenster (Tage, Versuche heute, Deaktivierung anfordern, Blockliste aktualisieren).
 
+## Deinstallieren
+
+**Normaler Weg:** `KlarBlock.exe` erneut starten, „Deaktivierung anfordern“, Wartezeit abwarten, „Jetzt deaktivieren“.
+
+**Wichtig:** Einfach die `.exe` zu löschen entfernt KlarBlock **nicht**. Der Blocker läuft aus `C:\Program Files\KlarBlock\` weiter, und die Einträge in der Hosts-Datei bleiben.
+
+**Notfall-Entfernung (ohne Wartezeit):** `notfall-entfernen.bat` mit Rechtsklick > „Als Administrator ausführen“ starten. Das Skript beendet den Hintergrundprozess, löscht die geplanten Aufgaben, entfernt den KlarBlock-Block aus der Hosts-Datei, setzt die Browser-Richtlinien zurück und löscht Programm- und Einstellungsordner. Danach den Browser neu starten. Gedacht zum Testen und für defekte Installationen.
+
+**Von Hand**, falls das Skript nicht geht (Eingabeaufforderung als Administrator):
+
+```
+schtasks /delete /f /tn KlarBlock
+schtasks /delete /f /tn KlarBlock-Waechter
+taskkill /f /im KlarBlock.exe
+notepad C:\Windows\System32\drivers\etc\hosts
+```
+
+Im Editor alles von `# >>> KlarBlock BEGIN` bis `# <<< KlarBlock END <<<` löschen und speichern. Zum Schluss `ipconfig /flushdns`.
+
 ## Bauen (für dich als Entwickler)
 
 Auf einem Windows-PC mit Python 3.11+ von python.org: `build.bat` ausführen. Ergebnis: `dist\KlarBlock.exe`.
